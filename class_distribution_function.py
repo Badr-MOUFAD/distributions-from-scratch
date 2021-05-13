@@ -61,6 +61,20 @@ class DistributionFunction:
 
         return y[0][0]
 
+    def generate_samples(self, size=1):
+        # sample from a uniform [0, 1]
+        arr_p0 = np.random.rand(size)
+
+        # corresponding mappings of p0
+        Y = []
+
+        for p0 in arr_p0:
+            y = self.map_dist_uniform(p0)
+
+            Y.append(y)
+            print(y)
+        return Y
+
 
 # # example
 # dis_func = lambda u: (1 / np.pi) * 1 / (1 + u ** 2) * RecFunction(-10, 10)(u)

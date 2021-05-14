@@ -17,6 +17,12 @@ class DistributionFunction:
 
         # vectorize dist function
         self.func = np.vectorize(func)
+
+        # create table of [(xi, pi)]
+        self.FX_hat = []
+        for x in np.linspace(self.a, self.b, 10):
+            self.FX_hat.append((x, self.cumulative_dist_function(x)))
+
         return
 
     def __call__(self, x):
@@ -25,6 +31,7 @@ class DistributionFunction:
     # cumulative distribution function F
     def cumulative_dist_function(self, x):
         a, b = self.a, self.b
+
         # case x lies on the left side of domain
         # of definition
         if x < a:
@@ -35,9 +42,9 @@ class DistributionFunction:
         if x >= b:
             return 1
 
-        # integrate from the right
-        if a == -np.inf:
-            return 1 - quad(lambda u: self(u), x, b)[0]
+        # # integrate from the right
+        # if a == -np.inf:
+        #     return 1 - quad(lambda u: self(u), x, b)[0]
 
         return quad(lambda u: self(u), a, x)[0]
 
@@ -48,16 +55,14 @@ class DistributionFunction:
         equation_func = lambda x: self.cumulative_dist_function(x) - p0
 
         # starting point of solver
-        # start from the finite border
-        # a, b = self.a, self.b
-        #
-        # m = min(a, b)
-        # M = max(a, b)
-        #
-        # x0 = m if m != -np.inf else M
+        # take mid point
+        FX_hat, n = self.FX_hat, len(self.FX_hat)
+        i, j, = generalized_binary_search(arr_obj=FX_hat, i=0, j=n, target=p0, metric=lambda x: x[1])
 
-        # solve and unpack
-        y = fsolve(func=equation_func, x0=np.array([0]), full_output=True)
+        x0 = (FX_hat[i][0] + FX_hat[j][0]) / 2
+
+        # solve
+        y = fsolve(func=equation_func, x0=np.array([x0]), full_output=True)
 
         return y[0][0]
 
@@ -75,14 +80,39 @@ class DistributionFunction:
             print(y)
         return Y
 
+    def find_starting_point(self):
+        return
+
+
+# binary search performed on object
+# objective is find i, j such that metric(ith-object) <= target < metric(jth-object)
+# assume len(arr_obj) > 1
+# assume that: metric(1st-object) <= target < metric(nth-object)
+def generalized_binary_search(arr_obj, i, j, target, metric=lambda x: x):
+    if j - i == 1:
+        return i, j
+
+    # index of the middle point
+    mid = int((i + j) / 2)
+    current_val = metric(arr_obj[mid])
+
+    if current_val == target:
+        return mid, mid + 1
+
+    if current_val > target:
+        return generalized_binary_search(arr_obj, i, mid, target, metric)
+
+    return generalized_binary_search(arr_obj, mid, j, target, metric)
+
 
 # # example
-# dis_func = lambda u: (1 / np.pi) * 1 / (1 + u ** 2) * RecFunction(-10, 10)(u)
+# interval = [-10, 10]
+# dis_func = lambda u: (1 / np.pi) * 1 / (1 + u ** 2) * RecFunction(*interval)(u)
 #
-# dist = DistributionFunction(func=dis_func, interval=[-10, 10])
+# dist = DistributionFunction(func=dis_func, interval=interval)
 #
 # # plot of distribution
-# x = np.linspace(-10, 10, 200)
+# x = np.linspace(*interval, 200)
 # plt.plot(x, dist(x))
 #
 # plt.show()

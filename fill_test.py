@@ -1,9 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from step_functions import Heaviside, RecFunction
-from class_distribution_function import DistributionFunction
-
+from tools.step_functions import Heaviside, RecFunction
 
 x_uniform = np.linspace(-1, 2)
 x_exp = np.linspace(-1, 10)

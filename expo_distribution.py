@@ -3,11 +3,10 @@ import numpy as np
 from scipy.integrate import quad
 from scipy.optimize import fsolve
 
-from step_functions import Heaviside
+from tools.step_functions import Heaviside
 
 # graph
 import matplotlib.pyplot as plt
-from plotly import graph_objects as go
 import plotly.io as pio
 
 pio.templates.default = "plotly_white"

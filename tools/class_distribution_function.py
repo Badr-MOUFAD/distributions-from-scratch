@@ -2,10 +2,6 @@ import numpy as np
 from scipy.integrate import quad
 from scipy.optimize import fsolve
 
-import matplotlib.pyplot as plt
-
-from step_functions import Heaviside, RecFunction
-
 
 class DistributionFunction:
     # func with following props
@@ -105,7 +101,7 @@ def generalized_binary_search(arr_obj, i, j, target, metric=lambda x: x):
     return generalized_binary_search(arr_obj, mid, j, target, metric)
 
 
-# # example
+# # example Chauchy distribution
 # interval = [-10, 10]
 # dis_func = lambda u: (1 / np.pi) * 1 / (1 + u ** 2) * RecFunction(*interval)(u)
 #

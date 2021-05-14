@@ -1,10 +1,9 @@
 import numpy as np
-from scipy.stats import expon, norm
 
 import matplotlib.pyplot as plt
 
-from class_distribution_function import DistributionFunction
-from step_functions import Heaviside, RecFunction
+from tools.class_distribution_function import DistributionFunction
+from tools.step_functions import RecFunction
 
 
 interval = [0, np.pi]

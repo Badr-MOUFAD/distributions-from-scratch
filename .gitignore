@@ -124,3 +124,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# my ignores
+screenshots/test_normal.gif
+screenshots/test_normal_2.gif
+screenshots/test_normal_3.gif
+screenshots/test_normal_4.gif
+screenshots/test_normal_5.gif

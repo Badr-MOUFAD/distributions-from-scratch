@@ -4,4 +4,4 @@ Article about this subject is soon to be release,
 
 > In progress, stay tuned ...
 
-![Alt](screenshots/test_normal_7.gif)
+![Alt](screenshots/anim_algo.gif)

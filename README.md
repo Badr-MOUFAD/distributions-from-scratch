@@ -7,7 +7,9 @@ which is a method used to generate samples from density function by leveraging a
 It exploits both the bijection between a uniform and a custom density function, and the ease of sampling from a uniform distribution 
 (through a [pseudorandom generator](https://en.wikipedia.org/wiki/Pseudorandom_number_generator)).
 
-I have written a detailed article about the topic where I explain the intuition behind this method. Here is the [link]() for the article.
+I have written a detailed article about the topic where I explain the intuition behind this method. Here is the 
+[link](https://badr-moufad.medium.com/an-insight-on-generating-samples-from-a-custom-probability-density-function-d0a06c290c54) 
+for the article.
 
 
 # About this repository

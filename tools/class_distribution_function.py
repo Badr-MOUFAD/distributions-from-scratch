@@ -6,7 +6,7 @@ from scipy.optimize import fsolve
 class DistributionFunction:
     # func with following props
     # continuous, defined on an interval of form
-    # [a, b], (-inf, b], [a, +inf)
+    # [a, b]
     # with integral == 1
     def __init__(self, func, interval):
         self.a, self.b = interval
@@ -16,7 +16,7 @@ class DistributionFunction:
 
         # create table of [(xi, pi)]
         self.FX_hat = []
-        for x in np.linspace(self.a, self.b, 10):
+        for x in np.linspace(self.a, self.b, 20):
             self.FX_hat.append((x, self.cumulative_dist_function(x)))
 
         return
@@ -37,10 +37,6 @@ class DistributionFunction:
         # of definition
         if x >= b:
             return 1
-
-        # # integrate from the right
-        # if a == -np.inf:
-        #     return 1 - quad(lambda u: self(u), x, b)[0]
 
         return quad(lambda u: self(u), a, x)[0]
 
@@ -75,9 +71,6 @@ class DistributionFunction:
             Y.append(y)
             print(y)
         return Y
-
-    def find_starting_point(self):
-        return
 
 
 # binary search performed on object

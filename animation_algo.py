@@ -14,7 +14,7 @@ size = 1000
 nb_bins = int(1 + 3.322 * np.log(size))
 
 # interval and hist ticks
-interval = [-3.5, 3.5]
+interval = [-1, 2]
 hist_ticks_dist = np.linspace(*interval, nb_bins)
 dx = hist_ticks_dist[1] - hist_ticks_dist[0]
 
@@ -22,11 +22,20 @@ interval_unif = [0, 1]
 hist_ticks_unif = np.linspace(*interval_unif, nb_bins)
 dx_unif = hist_ticks_unif[1] - hist_ticks_unif[0]
 
-# create prob dist function
+
+# # create prob dist function
+# distribution = DistributionFunction(
+#     func=lambda u: (2*np.pi) ** (-1 / 2) * np.exp(-u ** 2 / 2) * RecFunction(*interval)(u),
+#     interval=interval
+# )
+
+# distribution function & interval
+interval = [-1, 2]
 distribution = DistributionFunction(
-    func=lambda u: (2*np.pi) ** (-1 / 2) * np.exp(-u ** 2 / 2) * RecFunction(*interval)(u),
+    func=lambda u: (1 + 2 / np.pi) ** (-1) * (-u * RecFunction(-1, 0)(u) + np.sin(np.pi * u) * RecFunction(0, 1)(u) + (u - 1) * RecFunction(1, 2)(u)),
     interval=interval
 )
+
 
 # sample from a uniform [0, 1]
 probs = np.random.rand(size)
@@ -54,16 +63,16 @@ for i in range(size):
 fig, axs = plt.subplots(1, 2)
 
 # histogram
-_, _, bar_container_unif = axs[0].hist([], hist_ticks_unif, lw=1, ec="yellow", alpha=0.5, label="sampled")
-_, _, bar_container_dist = axs[1].hist([], hist_ticks_dist, lw=1, ec="yellow", alpha=0.5, label="sampled")
+_, _, bar_container_unif = axs[0].hist([], hist_ticks_unif, lw=1, ec="#7f7f7f", alpha=0.5, label="sampled")
+_, _, bar_container_dist = axs[1].hist([], hist_ticks_dist, lw=1, ec="#7f7f7f", alpha=0.5, label="sampled")
 
 
 # dis function
 t_unif = np.linspace(-0.5, 1.5, 100)
-unif_dist = axs[0].plot(t_unif, RecFunction(0, 1)(t_unif), label="ideal")
+unif_dist = axs[0].plot(t_unif, RecFunction(0, 1)(t_unif), label="ideal", color='#d62728')
 
 t_dist = np.linspace(*interval, 100)
-dist_func, = axs[1].plot(t_dist, distribution(t_dist), label="ideal")
+dist_func, = axs[1].plot(t_dist, distribution(t_dist), label="ideal", color='#d62728')
 
 # text
 # to display elapsed time
@@ -111,22 +120,23 @@ anim = FuncAnimation(fig, prepare_animation(bar_container_unif, bar_container_di
 for i in range(2):
     # axis
     axs[i].set_xlabel("$X$")
-    axs[i].set_ylabel("Frequency")
+    axs[i].set_ylabel("$Fraction$")
 
     axs[i].legend()
 
+axs[1].set_xlabel("$Y$")
 
-axs[0].set_ylim(-0.1, 2)
-axs[1].set_ylim(-0.1, 1)
+axs[0].set_ylim(0, 2)
+axs[1].set_ylim(0, 2)
 
 #
 axs[0].set_xlim(-0.5, 1.5)
 axs[1].set_xlim(*interval)
 
 axs[0].set_title("Uniform")
-axs[1].set_title("Normal distribution")
+axs[1].set_title("Custom density function")
 
 plt.tight_layout()
 plt.show()
 
-anim.save('test_screenshots/anim_algo.gif', writer='Pillow', fps=60)
+anim.save('screenshots/anim-algo-modif-custom-4-.gif', writer='Pillow', fps=60)

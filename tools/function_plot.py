@@ -10,3 +10,12 @@ def update_dot_dash_plots(dot_plot, dash_plot, new_x, new_y):
 
     return dot_plot, dash_plot
 
+
+def interpolatePoints(p1, p2):
+    p1_x, p1_y = p1
+    p2_x, p2_y = p2
+
+    def result(x):
+        return (p2_y - p1_y) / (p2_x - p1_x) * (x - p1_x) + p1_y
+
+    return result

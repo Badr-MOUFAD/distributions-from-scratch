@@ -9,14 +9,21 @@ from tools.function_plot import update_dot_dash_plots
 
 
 # sample size
-size = 100
+size = 5
 
 # distribution function & interval
-interval = [-3.5, 3.5]
+# interval = [-3.5, 3.5]
+# distribution = DistributionFunction(
+#     func=lambda u: (2*np.pi) ** (-1/2) * np.exp(-u ** 2 / 2) * RecFunction(*interval)(u),
+#     interval=interval
+# )
+
+interval = [-1, 2]
 distribution = DistributionFunction(
-    func=lambda u: (2*np.pi) ** (-1/2) * np.exp(-u  ** 2 / 2) * RecFunction(*interval)(u),
+    func=lambda u: (1 + 2 / np.pi) ** (-1) * (-u * RecFunction(-1, 0)(u) + np.sin(np.pi * u) * RecFunction(0, 1)(u) + (u - 1) * RecFunction(1, 2)(u)),
     interval=interval
 )
+
 
 # sample from uniform
 probabilities = np.random.rand(size)
@@ -65,8 +72,8 @@ def anim(index_frame):
     unif_dot, unif_dash = update_dot_dash_plots(unif_dot, unif_dash, new_x=probabilities[index], new_y=1)
     dist_dot, dist_dash = update_dot_dash_plots(dist_dot, dist_dash, new_x=Y[index], new_y=distribution(Y[index]))
 
-    t_unif = np.linspace(0, probabilities[index], 100)
-    t_dist = np.linspace(-3.5, Y[index], 100)
+    t_unif = np.linspace(0, probabilities[index], 1000)
+    t_dist = np.linspace(-3.5, Y[index], 1000)
 
     unif = axs[0].fill_between(t_unif, RecFunction(0, 1)(t_unif), color="#1f77b4", alpha=0.5)
     dist = axs[1].fill_between(t_dist, distribution(t_dist), color="#1f77b4", alpha=0.5)
@@ -86,11 +93,11 @@ for inter in [interval_unif, interval]:
 
 # y limits
 axs[0].set_ylim(0, 1.5)
-axs[1].set_ylim(0, 0.65)
+axs[1].set_ylim(0, 1.5)
 
 # titles
 count = 0
-for title in ["Uniform", "Normal distribution"]:
+for title in ["Uniform", "Normal"]:
     axs[count].set_title(title)
 
     count += 1
@@ -98,10 +105,15 @@ for title in ["Uniform", "Normal distribution"]:
 # x label y label
 for i in range(2):
     axs[i].set_xlabel("$X$")
-    axs[i].set_ylabel("Frequency")
+    axs[i].set_ylabel("$Fraction$")
+
+
+axs[1].set_xlabel("$Y$")
 
 
 plt.tight_layout()
+
+fig.set_size_inches(6, 3.2)
 plt.show()
 
-# animation.save('test_screenshots/anim_algo_detail.gif', writer='Pillow', fps=60)
+animation.save('screenshots/anim-algo-custom-2.gif', writer='Pillow', fps=60)
